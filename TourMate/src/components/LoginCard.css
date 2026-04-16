@@ -1,0 +1,100 @@
+/* src/components/LoginCard.css */
+.auth-card {
+  background: #ffffff;
+  padding: 45px 35px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.auth-card h1 {
+  font-size: 22px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-group svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.auth-extras {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.auth-extras a {
+  color: #28a745;
+  text-decoration: none;
+}
+
+.btn-entrar {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(to right, #249444, #74bc3c);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.social-divider {
+  margin: 20px 0;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+}
+
+.social-divider span {
+  background: white;
+  padding: 0 10px;
+  position: relative;
+  top: 10px;
+  font-size: 12px;
+  color: #888;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+.social-icons img {
+  width: 30px;
+  height: 30px;
+}
+
+.card-footer a {
+  color: #28a745;
+  text-decoration: none;
+  font-weight: bold;
+}

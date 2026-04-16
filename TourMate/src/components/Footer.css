@@ -1,0 +1,124 @@
+/* src/components/Footer.css */
+
+.tourmate-footer-container {
+  width: 100%;
+  background-color: #122336; /* Azul oscuro naval del mockup */
+  color: #aab8c2; /* Gris claro azulado para el texto */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+}
+
+.tourmate-footer-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 50px;
+  padding: 0 40px;
+  margin-bottom: 40px;
+}
+
+/* El icono de estrella/destello a la izquierda */
+.footer-sparkle {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 10px;
+  opacity: 0.7;
+}
+
+/* Envoltorio de las 4 columnas */
+.footer-columns-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+  flex-wrap: wrap; /* Para que se adapte en celulares */
+  gap: 20px;
+}
+
+/* Cada columna individual */
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  max-width: 250px; /* Limita el ancho del texto largo */
+}
+
+.footer-col h3 {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.footer-col p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.footer-col a {
+  color: #aab8c2;
+  text-decoration: none;
+  font-size: 12px;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #ffffff;
+}
+
+/* Iconos sociales circulares */
+.footer-social-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.social-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #aab8c2;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.social-circle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Barra inferior (Copyright) */
+.footer-bottom-bar {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Línea divisoria muy suave */
+  display: flex;
+  justify-content: center;
+}
+
+.footer-bottom-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  font-size: 11px;
+}
+
+.footer-bottom-content a {
+  color: #aab8c2;
+  text-decoration: none;
+}
+
+.footer-bottom-content a:hover {
+  color: #ffffff;
+}
