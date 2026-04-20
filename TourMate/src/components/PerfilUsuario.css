@@ -1,0 +1,106 @@
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2.5rem;
+  margin-top: 20px;
+}
+
+.glass-card {
+  background: white;
+  border-radius: 32px;
+  padding: 3rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+}
+
+/* Avatar y Badge */
+.avatar-xl {
+  width: 120px;
+  height: 120px;
+  background: #10b981;
+  color: white;
+  font-size: 3rem;
+  font-weight: 800;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  border: 6px solid #f1f5f9;
+}
+
+.badge-novato {
+  background: #ecfdf5;
+  color: #10b981;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+/* Inputs y Botones de Formulario */
+.form-row label {
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.input-group-action {
+  display: flex;
+  gap: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: 2px solid #f1f5f9;
+  background: #f8fafc;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #10b981;
+  background: white;
+  outline: none;
+}
+
+.btn-action {
+  background: #f1f5f9;
+  color: #1e293b;
+  border: none;
+  padding: 0 25px;
+  border-radius: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-action:hover {
+  background: #e2e8f0;
+}
+
+.btn-save-full {
+  background: #0f172a;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 16px;
+  font-weight: 700;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-save-full:hover {
+  background: #10b981;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+}
+
+@media (max-width: 900px) {
+  .profile-grid { grid-template-columns: 1fr; }
+}

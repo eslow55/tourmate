@@ -1,0 +1,96 @@
+.packages-layout {
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.packages-content {
+  padding: 4rem 8%;
+}
+
+.packages-hero {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.packages-hero h1 {
+  font-size: 2.5rem;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.packages-hero p {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+/* Grid de Tarjetas */
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+}
+
+.package-card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.package-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.card-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.price-tag {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: #4CAF50;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.card-info {
+  padding: 1.5rem;
+}
+
+.card-info h3 {
+  color: #1e293b;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.card-info p {
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.btn-reserve {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #0f172a; /* Azul oscuro del footer */
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-reserve:hover {
+  background: #4CAF50; /* Verde al pasar el mouse */
+}

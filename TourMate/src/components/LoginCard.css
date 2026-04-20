@@ -1,100 +1,137 @@
-/* src/components/LoginCard.css */
 .auth-card {
-  background: #ffffff;
-  padding: 45px 35px;
-  border-radius: 20px;
+  background: white;
+  padding: 40px;
+  border-radius: 25px; /* Bordes redondeados como la imagen */
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   text-align: center;
-}
-
-.auth-card h1 {
-  font-size: 22px;
-  margin-bottom: 25px;
-  font-weight: bold;
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.input-group {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  z-index: 10;
   position: relative;
 }
 
-.input-group svg {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #777;
+h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 2rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 10px 15px;
+  margin-bottom: 1rem;
+}
+
+.input-group .icon {
+  margin-right: 10px;
+  font-size: 1.1rem;
 }
 
 .input-group input {
+  border: none;
+  outline: none;
   width: 100%;
-  padding: 12px 12px 12px 40px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
+  font-size: 0.95rem;
+  color: #333;
 }
 
 .auth-extras {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
 }
 
-.auth-extras a {
-  color: #28a745;
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+  cursor: pointer;
+}
+
+.forgot-link {
   text-decoration: none;
+  color: #4CAF50;
+  font-weight: 500;
 }
 
 .btn-entrar {
   width: 100%;
-  padding: 14px;
-  background: linear-gradient(to right, #249444, #74bc3c);
+  background: #4CAF50; /* El verde de tu diseño */
   color: white;
   border: none;
-  border-radius: 30px;
+  padding: 14px;
+  border-radius: 12px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-entrar:hover {
+  background: #43a047;
+}
+
+.btn-entrar:disabled {
+  background: #a5d6a7;
+  cursor: not-allowed;
 }
 
 .social-divider {
-  margin: 20px 0;
-  border-bottom: 1px solid #ddd;
+  margin: 1.5rem 0;
+  font-size: 0.8rem;
+  color: #999;
   position: relative;
-}
-
-.social-divider span {
-  background: white;
-  padding: 0 10px;
-  position: relative;
-  top: 10px;
-  font-size: 12px;
-  color: #888;
 }
 
 .social-icons {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 25px;
-  margin-bottom: 20px;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
 }
 
-.social-icons img {
-  width: 30px;
-  height: 30px;
+.social-btn {
+  background: white;
+  border: 1px solid #eee;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
 }
 
-.card-footer a {
-  color: #28a745;
-  text-decoration: none;
+.social-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+}
+
+.social-btn img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.card-footer {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.reg-link {
+  color: #4CAF50;
   font-weight: bold;
+  text-decoration: none;
+}
+
+.reg-link:hover {
+  text-decoration: underline;
 }

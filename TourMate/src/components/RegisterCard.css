@@ -1,0 +1,74 @@
+.auth-card {
+  background: white;
+  padding: 40px;
+  border-radius: 25px; /* Bordes muy redondeados como en la imagen */
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.auth-card h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #1e293b;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fff;
+}
+
+.input-group .icon {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.btn-register {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background-color: #4CAF50; /* El verde de TourMate */
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.btn-register:hover {
+  background-color: #43a047;
+}
+
+.btn-register:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
+
+.card-footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.reg-link {
+  color: #4CAF50;
+  font-weight: bold;
+  text-decoration: none;
+}
