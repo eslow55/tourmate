@@ -1,19 +1,168 @@
-/* src/pages/LoginPage.css */
-
-.page-layout {
+/* Contenedor principal */
+.login-page-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
 }
 
-.login-main-content {
-  flex: 1;
+/* Header Blanco */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 8%;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  z-index: 20;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+.header-nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+/* Selectores ajustados para Navigation en React (span en lugar de a) */
+.header-nav span {
+  text-decoration: none;
+  color: #64748b;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.header-nav span:hover, 
+.active-link {
+  color: #4CAF50 !important; /* Verde TourMate */
+}
+
+.active-link {
+  font-weight: 700;
+  border-bottom: 2px solid #4CAF50;
+}
+
+/* Sección Hero (Imagen de fondo /medellin.jpg) */
+.hero-section {
+  flex: 1; 
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
-  
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+  padding: 4rem 20px;
+  background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), 
               url('/medellin.jpg') no-repeat center center;
   background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Footer Azul Oscuro */
+.main-footer {
+  background-color: #0f172a; /* Color exacto de la imagen */
+  color: #94a3b8;
+  padding: 4rem 8% 1.5rem;
+}
+
+.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+  gap: 2rem;
+}
+
+.footer-brand {
+  color: white;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-description {
+  max-width: 300px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: flex;
+  gap: 4rem;
+}
+
+.footer-column h4 {
+  color: white;
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column li {
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footer-column li:hover {
+  color: #4CAF50;
+}
+
+/* Iconos Sociales Footer */
+.social-links-footer {
+  display: flex;
+  gap: 10px;
+}
+
+.social-dot {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #334155;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.social-dot:hover {
+  border-color: #4CAF50;
+  color: white;
+  background: rgba(76, 175, 80, 0.1);
+}
+
+/* Línea final del footer */
+.footer-bottom {
+  border-top: 1px solid #1e293b;
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.footer-reg {
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.footer-reg:hover {
+  text-decoration: underline;
 }

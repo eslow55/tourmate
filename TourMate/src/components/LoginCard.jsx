@@ -1,46 +1,122 @@
-import React from 'react';
-import './LoginCard.css';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { auth } from "../firebase/firebaseConfig"; 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import ModalNotificacion from "./ModalNotificacion"; 
+import "./LoginCard.css";
 
 const LoginCard = () => {
-  return (
-    <div className="auth-card">
-      <h1>Iniciar Sesión en TourMate</h1>
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  // Estados para el Modal Animado
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Intento de login real con Firebase
+      await signInWithEmailAndPassword(auth, email.trim(), password);
       
-      <form className="form-container" onSubmit={(e) => e.preventDefault()}>
-        <div className="input-group">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-          <input type="email" placeholder="Correo Electrónico" required />
+      setModalMessage("🔓 ¡Sesión iniciada! Bienvenido de nuevo a TourMate.");
+      setShowModal(true);
+
+    } catch (error) {
+      let mensajeError = "❌ Ocurrió un error al entrar.";
+      if (error.code === "auth/invalid-credential") {
+        mensajeError = "❌ Correo o contraseña incorrectos.";
+      } else if (error.code === "auth/user-not-found") {
+        mensajeError = "❌ Este usuario no está registrado.";
+      }
+      
+      setModalMessage(mensajeError);
+      setShowModal(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const alCerrarModal = () => {
+    setShowModal(false);
+    if (modalMessage.includes("¡Sesión iniciada!")) {
+      navigate("/dashboard");
+    }
+  };
+
+  return (
+    <>
+      <div className="auth-card">
+        <h1>Iniciar Sesión en TourMate</h1>
+        
+        <form className="form-container" onSubmit={handleLogin}>
+          <div className="input-group">
+            <span className="icon">✉️</span>
+            <input 
+              type="email" 
+              placeholder="Correo Electrónico" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required 
+            />
+          </div>
+
+          <div className="input-group">
+            <span className="icon">🔒</span>
+            <input 
+              type="password" 
+              placeholder="Contraseña" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required 
+            />
+          </div>
+
+          <div className="auth-extras">
+            <label className="checkbox-label">
+              <input type="checkbox" /> Recuérdame
+            </label>
+            <a href="#" className="forgot-link">Olvidé mi contraseña</a>
+          </div>
+
+          <button type="submit" className="btn-entrar" disabled={loading}>
+            {loading ? "VERIFICANDO..." : "ENTRAR"}
+          </button>
+        </form>
+
+        <div className="social-divider">
+          <span>o iniciar sesión con:</span>
         </div>
 
-        <div className="input-group">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-          <input type="password" placeholder="Contraseña" required />
+        <div className="social-icons">
+          <button type="button" className="social-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google" />
+          </button>
+          <button type="button" className="social-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" />
+          </button>
+          <button type="button" className="social-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" alt="Apple" />
+          </button>
         </div>
 
-        <div className="auth-extras">
-          <label className="checkbox-label">
-            <input type="checkbox" /> Recuérdame
-          </label>
-          <a href="#">Olvidé mi contraseña</a>
+        <div className="card-footer">
+          ¿No tienes una cuenta? <Link to="/register" className="reg-link">Regístrate gratis</Link>
         </div>
-
-        <button type="submit" className="btn-entrar">ENTRAR</button>
-      </form>
-
-      <div className="social-divider">
-        <span>o iniciar sesión con:</span>
       </div>
 
-      <div className="social-icons">
-        <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google" />
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" />
-        <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" alt="Apple" />
-      </div>
-
-      <div className="card-footer">
-        ¿No tienes una cuenta? <a href="/register">Regístrate gratis</a>
-      </div>
-    </div>
+      {/* Modal que pediste para reemplazar los alerts */}
+      <ModalNotificacion 
+        mostrar={showModal} 
+        mensaje={modalMessage} 
+        onAceptar={alCerrarModal} 
+      />
+    </>
   );
 };
 

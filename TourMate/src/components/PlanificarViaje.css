@@ -1,0 +1,83 @@
+.planning-container {
+  margin: 2rem 0;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.planning-header h2 {
+  color: #0f172a;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.planning-header p {
+  color: #64748b;
+  margin-bottom: 2rem;
+}
+
+.planning-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.planning-card {
+  background: white;
+  padding: 2.5rem 1.5rem;
+  border-radius: 32px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+}
+
+.planning-card:hover {
+  transform: translateY(-8px);
+  border-color: #10b981;
+  box-shadow: 0 15px 35px rgba(16, 185, 129, 0.1);
+}
+
+.planning-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  background: #f8fafc;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.planning-card h3 {
+  color: #1e293b;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.planning-price {
+  color: #10b981; /* Verde TourMate */
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 2rem;
+}
+
+.btn-select {
+  width: 100%;
+  padding: 14px;
+  background: #0f172a; /* Azul oscuro */
+  color: white;
+  border: none;
+  border-radius: 50px; /* Botón tipo píldora */
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-select:hover {
+  background: #10b981;
+  transform: scale(1.02);
+}

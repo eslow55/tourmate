@@ -1,0 +1,394 @@
+/* ============================================================
+   1. VARIABLES Y DISEÑO BASE
+   ============================================================ */
+:root {
+  --primary-emerald: #10b981;
+  --primary-emerald-hover: #059669;
+  --dark-navy: #0f172a;
+  --soft-slate: #f1f5f9;
+  --bg-body: #f8fafc;
+  --white: #ffffff;
+
+  /* Colores de Texto */
+  --text-main: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  
+  /* Escala de Tamaños */
+  --fs-h1: 2.25rem;
+  --fs-h2: 1.5rem;
+  --fs-body: 0.95rem;
+  --fs-small: 0.8rem;
+  --fs-xs: 0.7rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   2. LAYOUT Y SIDEBAR
+   ============================================================ */
+.layout-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar-nav {
+  width: 280px;
+  background-color: var(--dark-navy);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-brand {
+  color: var(--white);
+  font-size: 1.75rem;
+  font-weight: 900;
+  margin-bottom: 45px;
+  text-align: center;
+  letter-spacing: -1px;
+}
+
+.nav-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 14px 18px;
+  border-radius: 14px;
+  text-align: left;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s;
+}
+
+.nav-item.active {
+  background: var(--primary-emerald);
+  color: var(--white);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.nav-item:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+}
+
+/* BOTÓN DE CERRAR SESIÓN (AL FINAL DEL SIDEBAR) */
+.btn-logout {
+  width: 100%;
+  padding: 14px;
+  background: rgba(239, 68, 68, 0.1); /* Rojo muy suave de fondo */
+  color: #f87171; /* Rojo pastel/claro */
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: var(--fs-small);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: auto; /* Lo empuja al fondo del sidebar */
+  transition: 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: #ef4444;
+  color: var(--white);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+/* ============================================================
+   3. HEADER, PERFIL Y BARRA XP
+   ============================================================ */
+.main-viewport {
+  flex: 1;
+  padding: 35px 50px;
+  overflow-y: auto;
+}
+
+.glass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--white);
+  padding: 25px 40px;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  border: 1px solid #f1f5f9;
+  margin-bottom: 40px;
+}
+
+.header-info h1 {
+  font-size: var(--fs-h1);
+  font-weight: 900;
+  color: var(--dark-navy);
+  letter-spacing: -1px;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, var(--dark-navy), var(--primary-emerald));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* WIDGET RANGO Y EXPERIENCIA */
+.experience-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.level-info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.level-box {
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.level-txt {
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  color: var(--primary-emerald);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.xp-label {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.xp-current {
+  color: var(--dark-navy);
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.xp-unit {
+  color: var(--primary-emerald);
+  font-weight: 900;
+  font-size: 0.7rem;
+  margin-left: 2px;
+  letter-spacing: 0.5px;
+}
+
+.xp-bar-container {
+  width: 220px;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.xp-bar-fill {
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-emerald), #34d399);
+  border-radius: 20px;
+  position: relative;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.xp-bar-fill::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(rgba(255,255,255,0.2), transparent);
+}
+
+/* BLOQUE DE PERFIL */
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-left: 2px solid var(--soft-slate);
+  padding-left: 25px;
+}
+
+.profile-meta {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-email {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: var(--fs-body);
+}
+
+.profile-status {
+  font-size: var(--fs-body);
+  color: var(--primary-emerald);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.profile-avatar-circle {
+  width: 50px;
+  height: 50px;
+  background: var(--dark-navy);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+/* ============================================================
+   4. HERO BANNER & EMOJIS GIGANTES
+   ============================================================ */
+.hero-banner {
+  background: var(--dark-navy);
+  border-radius: 32px;
+  padding: 60px;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-txt h2 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.hero-img {
+  font-size: 8rem;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.4));
+  user-select: none;
+}
+
+.btn-hero-action {
+  background: var(--primary-emerald);
+  color: var(--white);
+  border: none;
+  padding: 16px 32px;
+  border-radius: 14px;
+  font-weight: 800;
+  margin-top: 25px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+/* ============================================================
+   5. ESTADÍSTICAS (STATS GRID) - ACTUALIZADO CON MÁS ESPACIO
+   ============================================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 35px; /* Más espacio entre tarjetas */
+  margin-bottom: 45px;
+}
+
+.card-stat {
+  background: var(--white);
+  padding: 35px 40px; /* Más espacio interno */
+  border-radius: 32px;
+  border: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Más espacio entre icono y texto */
+  transition: transform 0.3s ease;
+}
+
+.card-stat:hover {
+  transform: translateY(-5px);
+}
+
+.card-stat.highlight {
+  background: var(--primary-emerald);
+  color: var(--white);
+  border: none;
+}
+
+.icon-wrap {
+  font-size: 2.5rem; /* Iconos más grandes */
+  background: var(--bg-body);
+  width: 75px; /* Contenedor más grande */
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.card-stat.highlight .icon-wrap {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.data-num {
+  font-size: 2.5rem; /* Números más grandes */
+  font-weight: 900;
+  line-height: 1;
+}
+
+.data-lab {
+  font-size: var(--fs-small);
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+}
+
+.card-stat.highlight .data-lab {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================================
+   6. ANIMACIONES
+   ============================================================ */
+.view-animate {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
