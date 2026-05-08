@@ -3,15 +3,19 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD08sagTBQsrHQ-8v9iw_BsrwG6qiVIoZs", // Llave actualizada sin espacios
-  authDomain: "tourmate-e17d3.firebaseapp.com",
-  projectId: "tourmate-e17d3",
-  storageBucket: "tourmate-e17d3.firebasestorage.app",
-  messagingSenderId: "772056151082",
-  appId: "1:772056151082:web:097df2134085fa55977f53",
-  measurementId: "G-XXLC831R74"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
+// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
+
+// Exportar servicios
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export default app;
