@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { auth } from "../firebase/firebaseConfig"; 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebase/firebaseConfig"; // Añadimos db
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore"; // Funciones para leer/escribir base de datos
 import ModalNotificacion from "./ModalNotificacion"; 
 import "./LoginCard.css";
 
@@ -10,7 +11,6 @@ const LoginCard = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   
-  // Estados para el Modal Animado
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
@@ -21,9 +21,7 @@ const LoginCard = () => {
     setLoading(true);
 
     try {
-      // Intento de login real con Firebase
       await signInWithEmailAndPassword(auth, email.trim(), password);
-      
       setModalMessage("🔓 ¡Sesión iniciada! Bienvenido de nuevo a TourMate.");
       setShowModal(true);
 
@@ -42,9 +40,46 @@ const LoginCard = () => {
     }
   };
 
+  // Nueva función para iniciar sesión con Google
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    const provider = new GoogleAuthProvider();
+    
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Verificamos si el usuario de Google ya existe en nuestra base de datos
+      const userRef = doc(db, "usuarios", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      // Si no existe, lo registramos automáticamente como Turista
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          nombreCompleto: user.displayName,
+          email: user.email,
+          rol: "turista", 
+          isVerified: true,
+          rutasCompletadas: 0,
+          totalAmigos: 0,
+          puntosTourMate: 0,
+          fechaRegistro: new Date()
+        });
+      }
+
+      setModalMessage("🔓 ¡Sesión iniciada con Google!");
+      setShowModal(true);
+    } catch (error) {
+      setModalMessage("❌ Error al iniciar sesión con Google.");
+      setShowModal(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const alCerrarModal = () => {
     setShowModal(false);
-    if (modalMessage.includes("¡Sesión iniciada!")) {
+    if (modalMessage.includes("¡Sesión iniciada")) {
       navigate("/dashboard");
     }
   };
@@ -94,14 +129,9 @@ const LoginCard = () => {
         </div>
 
         <div className="social-icons">
-          <button type="button" className="social-btn">
+          {/* Botón único de Google con su función */}
+          <button type="button" className="social-btn" onClick={handleGoogleLogin} disabled={loading}>
             <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google" />
-          </button>
-          <button type="button" className="social-btn">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" />
-          </button>
-          <button type="button" className="social-btn">
-            <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" alt="Apple" />
           </button>
         </div>
 
@@ -110,7 +140,6 @@ const LoginCard = () => {
         </div>
       </div>
 
-      {/* Modal que pediste para reemplazar los alerts */}
       <ModalNotificacion 
         mostrar={showModal} 
         mensaje={modalMessage} 
