@@ -9,7 +9,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Escucha cambios en el estado de login
+    // Detecta si hay un usuario logueado actualmente
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
@@ -19,6 +19,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ user }}>
+      {/* No carga la app hasta que Firebase confirme el estado del usuario */}
       {!loading && children}
     </AuthContext.Provider>
   );
