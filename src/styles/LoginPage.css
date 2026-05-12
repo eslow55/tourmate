@@ -1,0 +1,30 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: calc(var(--header-h) + 40px) 24px 60px;
+}
+
+.auth-page__bg {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, var(--tm-navy) 0%, #1a3a5c 100%);
+  z-index: -1;
+}
+
+.auth-page__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(255,90,60,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,90,60,0.1) 0%, transparent 50%);
+}
+
+.auth-page__inner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

@@ -1,131 +1,111 @@
-import React, { useState, useRef, useEffect } from "react";
-import { auth, db } from "../firebase/firebaseConfig";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import "./RegisterCard.css";
+import ModalNotificacion from "./ModalNotificacion";
+import "../styles/LoginCard.css";
 
-const RegisterCard = () => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  
-  // Estados para el rol y el menú desplegable personalizado
-  const [rol, setRol] = useState("turista"); 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
-  const [loading, setLoading] = useState(false);
+export default function RegisterCard() {
+  const { register } = useAuth();
   const navigate = useNavigate();
-  const dropdownRef = useRef(null);
+  const [form, setForm] = useState({ displayName: "", email: "", password: "", confirm: "", role: "tourist" });
+  const [loading, setLoading] = useState(false);
+  const [notif, setNotif] = useState(null);
+  const [showPwd, setShowPwd] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Cerrar el menú si se hace clic afuera
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleRegister = async (e) => {
+  const handleRoleSelect = (val) => {
+    setForm({ ...form, role: val });
+    setIsDropdownOpen(false);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("⚠️ Las contraseñas no coinciden.");
+    if (!form.displayName || !form.email || !form.password || !form.confirm) {
+      setNotif({ type: "warning", title: "Campos requeridos", message: "Por favor completa todos los campos." });
+      return;
+    }
+    if (form.password !== form.confirm) {
+      setNotif({ type: "error", title: "Error", message: "Las contraseñas no coinciden." });
       return;
     }
     setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
-      const user = userCredential.user;
-
-      await updateProfile(user, { displayName: fullName });
-
-      const isVerified = rol === "guia" ? false : true;
-
-      await setDoc(doc(db, "usuarios", user.uid), {
-        nombreCompleto: fullName,
-        email: user.email,
-        rol: rol,
-        isVerified: isVerified, 
-        rutasCompletadas: 0,
-        totalAmigos: 0,
-        puntosTourMate: 0,
-        fechaRegistro: new Date()
-      });
+      const { profile } = await register(form.email, form.password, form.displayName, form.role);
+      setNotif({ type: "success", title: "¡Cuenta creada!", message: "Redirigiendo..." });
       
-      navigate("/dashboard");
-    } catch (error) {
-      alert("Error: " + error.message);
+      setTimeout(() => {
+        profile.role === "guide" ? navigate("/guide-dashboard") : navigate("/tourist");
+      }, 1200);
+    } catch (err) {
+      setNotif({ type: "error", title: "Error", message: "No se pudo crear la cuenta." });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    /* Usamos una clase única para NO afectar el Header */
-    <div className="tourmate-register-card">
-      <h1>Crear cuenta en TourMate</h1>
-      <form onSubmit={handleRegister} className="form-container">
-        
-        {/* MENÚ DESPLEGABLE PERSONALIZADO (Reemplaza al <select>) */}
-        <div 
-          className="input-group custom-dropdown" 
-          ref={dropdownRef}
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        >
-          <span className="icon">🎭</span>
-          <div className="selected-text">
-            {rol === "turista" ? "Quiero explorar (Turista)" : "Quiero enseñar mi ciudad (Guía)"}
-          </div>
-          <span className={`arrow ${isDropdownOpen ? "open" : ""}`}>▼</span>
+    <div className="auth-page-wrapper">
+      <form className="auth-card" onSubmit={handleSubmit} noValidate>
+        <div className="auth-card__header">
+          <div className="auth-card__icon">✈</div>
+          <h2 className="auth-card__title">Crear cuenta</h2>
+          <p className="auth-card__sub">Únete a la comunidad Tourmate</p>
+        </div>
 
-          {/* Las opciones que se despliegan con estilo */}
-          {isDropdownOpen && (
-            <div className="dropdown-options">
-              <div 
-                className="option-item" 
-                onClick={() => setRol("turista")}
-              >
-                Quiero explorar (Turista)
-              </div>
-              <div 
-                className="option-item" 
-                onClick={() => setRol("guia")}
-              >
-                Quiero enseñar mi ciudad (Guía)
-              </div>
+        <div className="auth-card__field">
+          <label>Nombre completo</label>
+          <input name="displayName" type="text" value={form.displayName} onChange={handleChange} placeholder="Tu nombre" />
+        </div>
+
+        <div className="auth-card__field">
+          <label>Correo electrónico</label>
+          <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="tu@email.com" />
+        </div>
+
+        <div className="auth-card__row">
+          <div className="auth-card__field">
+            <label>Contraseña</label>
+            <div className="auth-card__pwd-wrap">
+              <input name="password" type={showPwd ? "text" : "password"} value={form.password} onChange={handleChange} placeholder="••••••••" />
+              <button type="button" className="auth-card__toggle" onClick={() => setShowPwd(!showPwd)}>
+                {showPwd ? "Ver" : "Ocultar"}
+              </button>
             </div>
-          )}
+          </div>
+          <div className="auth-card__field">
+            <label>Confirmar</label>
+            <input name="confirm" type={showPwd ? "text" : "password"} value={form.confirm} onChange={handleChange} placeholder="••••••••" />
+          </div>
         </div>
 
-        <div className="input-group">
-          <span className="icon">👤</span>
-          <input type="text" placeholder="Nombre Completo" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+        <div className="auth-card__field">
+          <label>¿Cómo quieres participar?</label>
+          <div className={`custom-dropdown ${isDropdownOpen ? "is-open" : ""}`} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+            <div className="selected-text">
+              {form.role === "tourist" ? "🌍 Turista — Explorar" : "🧭 Guía — Ofrecer tours"}
+            </div>
+            <span className="arrow">▼</span>
+            {isDropdownOpen && (
+              <div className="dropdown-options">
+                <div className="option-item" onClick={() => handleRoleSelect("tourist")}>🌍 Turista — Explorar</div>
+                <div className="option-item" onClick={() => handleRoleSelect("guide")}>🧭 Guía — Ofrecer tours</div>
+              </div>
+            )}
+          </div>
         </div>
-        <div className="input-group">
-          <span className="icon">✉️</span>
-          <input type="email" placeholder="Correo Electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div className="input-group">
-          <span className="icon">🔒</span>
-          <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <div className="input-group">
-          <span className="icon">✔️</span>
-          <input type="password" placeholder="Confirmar Contraseña" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-        </div>
-        <button type="submit" className="btn-register" disabled={loading}>
-          {loading ? "REGISTRANDO..." : "REGISTRARSE"}
+
+        <button type="submit" className="auth-card__submit" disabled={loading}>
+          {loading ? <div className="auth-card__spinner" /> : "Empezar ahora"}
         </button>
+
+        <p className="auth-card__footer-text">
+          ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+        </p>
       </form>
-      <div className="card-footer">
-        ¿Ya tienes cuenta? <Link to="/login" className="reg-link">Inicia sesión</Link>
-      </div>
+
+      {notif && <ModalNotificacion {...notif} onClose={() => setNotif(null)} />}
     </div>
   );
-};
-
-export default RegisterCard;
+}

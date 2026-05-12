@@ -1,152 +1,110 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { auth, db } from "../firebase/firebaseConfig"; // Añadimos db
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore"; // Funciones para leer/escribir base de datos
-import ModalNotificacion from "./ModalNotificacion"; 
-import "./LoginCard.css";
+import ModalNotificacion from "./ModalNotificacion";
+import "../styles/LoginCard.css";
 
-const LoginCard = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-
+export default function LoginCard() {
+  const { login } = useAuth();
   const navigate = useNavigate();
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+  const [notif, setNotif] = useState(null);
+  const [showPwd, setShowPwd] = useState(false);
 
-  const handleLogin = async (e) => {
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.email || !form.password) {
+      setNotif({ type: "warning", title: "Campos requeridos", message: "Por favor completa todos los campos." });
+      return;
+    }
     setLoading(true);
-
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), password);
-      setModalMessage("🔓 ¡Sesión iniciada! Bienvenido de nuevo a TourMate.");
-      setShowModal(true);
-
-    } catch (error) {
-      let mensajeError = "❌ Ocurrió un error al entrar.";
-      if (error.code === "auth/invalid-credential") {
-        mensajeError = "❌ Correo o contraseña incorrectos.";
-      } else if (error.code === "auth/user-not-found") {
-        mensajeError = "❌ Este usuario no está registrado.";
-      }
+      // 1. Obtenemos el perfil directamente del login (según la mejora del context)
+      const { profile } = await login(form.email, form.password);
       
-      setModalMessage(mensajeError);
-      setShowModal(true);
+      setNotif({ type: "success", title: "¡Bienvenido!", message: "Iniciando sesión..." });
+
+      // 2. Redirección inteligente basada en el rol de Firestore
+      setTimeout(() => {
+        if (profile?.role === "guide") {
+          navigate("/guide-dashboard"); // Cambia esto por tu ruta real de guía
+        } else {
+          navigate("/tourist"); // Ruta estándar para turistas
+        }
+      }, 1000);
+
+    } catch (err) {
+      const msg =
+        err.code === "auth/user-not-found" ? "No existe una cuenta con ese correo." :
+        err.code === "auth/wrong-password" ? "Contraseña incorrecta." :
+        err.code === "auth/invalid-credential" ? "Credenciales inválidas." :
+        "Error al iniciar sesión. Intenta de nuevo.";
+      setNotif({ type: "error", title: "Error", message: msg });
     } finally {
       setLoading(false);
-    }
-  };
-
-  // Nueva función para iniciar sesión con Google
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    const provider = new GoogleAuthProvider();
-    
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      // Verificamos si el usuario de Google ya existe en nuestra base de datos
-      const userRef = doc(db, "usuarios", user.uid);
-      const userSnap = await getDoc(userRef);
-
-      // Si no existe, lo registramos automáticamente como Turista
-      if (!userSnap.exists()) {
-        await setDoc(userRef, {
-          nombreCompleto: user.displayName,
-          email: user.email,
-          rol: "turista", 
-          isVerified: true,
-          rutasCompletadas: 0,
-          totalAmigos: 0,
-          puntosTourMate: 0,
-          fechaRegistro: new Date()
-        });
-      }
-
-      setModalMessage("🔓 ¡Sesión iniciada con Google!");
-      setShowModal(true);
-    } catch (error) {
-      setModalMessage("❌ Error al iniciar sesión con Google.");
-      setShowModal(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const alCerrarModal = () => {
-    setShowModal(false);
-    if (modalMessage.includes("¡Sesión iniciada")) {
-      navigate("/dashboard");
     }
   };
 
   return (
-    <>
-      <div className="auth-card">
-        <h1>Iniciar Sesión en TourMate</h1>
-        
-        <form className="form-container" onSubmit={handleLogin}>
-          <div className="input-group">
-            <span className="icon">✉️</span>
-            <input 
-              type="email" 
-              placeholder="Correo Electrónico" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required 
+    <div className="auth-page-wrapper"> {/* Envoltura para centrar y aplicar fondo */}
+      <form className="auth-card" onSubmit={handleSubmit} noValidate>
+        <div className="auth-card__header">
+          <div className="auth-card__icon">✈</div>
+          <h2 className="auth-card__title">Iniciar sesión</h2>
+          <p className="auth-card__sub">Accede a tu cuenta de Tourmate</p>
+        </div>
+
+        <div className="auth-card__field">
+          <label htmlFor="email">Correo electrónico</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="tu@email.com"
+            autoComplete="email"
+          />
+        </div>
+
+        <div className="auth-card__field">
+          <label htmlFor="password">Contraseña</label>
+          <div className="auth-card__pwd-wrap">
+            <input
+              id="password"
+              name="password"
+              type={showPwd ? "text" : "password"}
+              value={form.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              autoComplete="current-password"
             />
+            <button type="button" className="auth-card__toggle" onClick={() => setShowPwd(!showPwd)}>
+              {showPwd ? "Ocultar" : "Mostrar"}
+            </button>
           </div>
-
-          <div className="input-group">
-            <span className="icon">🔒</span>
-            <input 
-              type="password" 
-              placeholder="Contraseña" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required 
-            />
-          </div>
-
-          <div className="auth-extras">
-            <label className="checkbox-label">
-              <input type="checkbox" /> Recuérdame
-            </label>
-            <a href="#" className="forgot-link">Olvidé mi contraseña</a>
-          </div>
-
-          <button type="submit" className="btn-entrar" disabled={loading}>
-            {loading ? "VERIFICANDO..." : "ENTRAR"}
-          </button>
-        </form>
-
-        <div className="social-divider">
-          <span>o iniciar sesión con:</span>
         </div>
 
-        <div className="social-icons">
-          {/* Botón único de Google con su función */}
-          <button type="button" className="social-btn" onClick={handleGoogleLogin} disabled={loading}>
-            <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google" />
-          </button>
-        </div>
+        <button type="submit" className="auth-card__submit" disabled={loading}>
+          {loading ? <span className="auth-card__spinner" /> : "Iniciar sesión"}
+        </button>
 
-        <div className="card-footer">
-          ¿No tienes una cuenta? <Link to="/register" className="reg-link">Regístrate gratis</Link>
-        </div>
-      </div>
+        <p className="auth-card__footer-text">
+          ¿No tienes cuenta? <Link to="/register">Regístrate gratis</Link>
+        </p>
+      </form>
 
-      <ModalNotificacion 
-        mostrar={showModal} 
-        mensaje={modalMessage} 
-        onAceptar={alCerrarModal} 
-      />
-    </>
+      {notif && (
+        <ModalNotificacion
+          type={notif.type}
+          title={notif.title}
+          message={notif.message}
+          onClose={() => setNotif(null)}
+        />
+      )}
+    </div>
   );
-};
-
-export default LoginCard;
+}
