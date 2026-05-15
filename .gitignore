@@ -1,43 +1,37 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# --- TOURMATE GITIGNORE ---
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-node_modules
-.env
-dist
-build
-
-# Variables de entorno
+# Variables de entorno (¡CRÍTICO para seguridad!)
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Dependencias
+# Dependencias de Node
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Producción
+# Compilación y Producción
 dist/
+dist-ssr/
 build/
+*.com
+*.exe
+
+# Archivos del Sistema y Editores
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+logs
+*.log
